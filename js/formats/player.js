@@ -4,9 +4,9 @@ function player(filename) {
   req.open("GET", filename, false);
   req.overrideMimeType("text/plain; charset=x-user-defined");
   req.send(null);
-  
+
   var player = JSON.parse(req.responseText);
-  
+
   // TODO: This smells hacky.
   player.DirectionEnum = this.DirectionEnum;
   player.changeGraphics = this.changeGraphics;
@@ -15,14 +15,12 @@ function player(filename) {
   player.loadGraphics = this.loadGraphics;
   player.loadFrames = this.loadFrames;
   player.frameLoaded = this.frameLoaded;
-  
+
   player.direction = this.DirectionEnum.SOUTH;
   player.renderReady = false;
   player.framesLoaded = 0;
   player.totalFrames = 0;
-  
-  player.loadGraphics();
-  
+
   return player;
 }
 
@@ -33,28 +31,48 @@ player.prototype.DirectionEnum = {
   WEST: 3
 };
 
-player.prototype.loadGraphics = function() {
-  // TODO: Convert this to a loop later when the Editor I/O is finialised,
-  // will be based on the graphics index e.g. this.graphics[0].frames etc...
-  this.totalFrames += this.graphics.north.frames.length;
-  this.totalFrames += this.graphics.south.frames.length;
-  this.totalFrames += this.graphics.east.frames.length;
-  this.totalFrames += this.graphics.west.frames.length;
+player.prototype.loadGraphics = function () {
+  appendPath(this.graphics.north.frames);
+  appendPath(this.graphics.south.frames);
+  appendPath(this.graphics.east.frames);
+  appendPath(this.graphics.west.frames);
   
-  this.loadFrames(this.graphics.north.frames);
-  this.loadFrames(this.graphics.south.frames);
-  this.loadFrames(this.graphics.east.frames);
-  this.loadFrames(this.graphics.west.frames);
+  var frames = [];
+  frames = frames.concat(this.graphics.north.frames);
+  frames = frames.concat(this.graphics.south.frames);
+  frames = frames.concat(this.graphics.east.frames);
+  frames = frames.concat(this.graphics.west.frames);
+
+  this.loadFrames(frames);
 };
 
-player.prototype.loadFrames = function (frames) {
+// TODO: Make this a utility function. When there is a Craftyjs compiler
+// it will do it instead.
+function appendPath(frames) {
   var len = frames.length;
   for (var i = 0; i < len; i++) {
-    var img = new Image();
-    img.src = PATH_BITMAP + frames[i];
-    img.onload = this.frameLoaded;
-    frames[i] = img;
+    frames[i] = PATH_BITMAP.concat(frames[i]);
   }
+}
+
+player.prototype.loadFrames = function (frames) {
+  var assets = {
+    "images": frames
+  };
+
+  Crafty.load(assets,
+          function () { // when loaded
+            currentPlayer.player.graphics.active = currentPlayer.player.graphics.south;
+            currentPlayer.player.renderReady = true;
+            var e = {ctx: Crafty.canvasLayer.context};
+            Crafty.trigger("Draw", e);
+          },
+          function (e) { // progress
+    
+          },
+          function (e) { // uh oh, error loading
+    
+          });
 };
 
 player.prototype.frameLoaded = function () {
@@ -65,8 +83,8 @@ player.prototype.frameLoaded = function () {
   if (currentPlayer.player.framesLoaded === currentPlayer.player.totalFrames) {
     currentPlayer.player.graphics.active = currentPlayer.player.graphics.south;
     currentPlayer.player.renderReady = true;
-    
-    var e = { ctx: Crafty.canvasLayer.context };
+
+    var e = {ctx: Crafty.canvasLayer.context};
     Crafty.trigger("Draw", e);
   }
 };
@@ -105,7 +123,7 @@ player.prototype.changeGraphics = function (direction) {
   }
 };
 
-player.prototype.checkCollisions = function (entity, from) { 
+player.prototype.checkCollisions = function (entity, from) {
   var result = entity.hit("solid-" + this.layer);
   if (result) {
     switch (from.axis) {

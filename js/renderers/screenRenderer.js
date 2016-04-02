@@ -39,7 +39,7 @@ screenRenderer.prototype.render = function (context) {
      */
     // TODO: if the player is on this layer render them now.
     if (currentPlayer.player.layer === i && currentPlayer.player.renderReady) {
-      var frame = currentPlayer.player.graphics.active.frames[currentPlayer.player.graphics.frameIndex];
+      var frame = Crafty.assets[currentPlayer.player.graphics.active.frames[currentPlayer.player.graphics.frameIndex]];
       context.drawImage(
               frame,
               currentPlayer.x - (frame.width / 2),

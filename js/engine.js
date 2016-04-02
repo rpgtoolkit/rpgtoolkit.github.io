@@ -123,6 +123,7 @@ function loadPlayer(tkPlayer) {
           .bind("EnterFrame", function (event) {
             dt = event.dt / 1000;
           });
+  currentPlayer.player.loadGraphics();
 }
 
 function runProgram(filename) {
