@@ -1,6 +1,13 @@
 <html>
   <head>
     <title>The Wizard's Tower</title>
+    <script type="text/javascript">
+      var PATH_PROJECT = "../game/TheWizardsTower-JS/";
+      var PATH_BOARD = PATH_PROJECT + "Boards/";
+      var PATH_MEDIA = PATH_PROJECT + "Media/";
+      var PATH_TILESET = PATH_PROJECT + "Tiles/";
+    </script>
+    
     <!-- TODO Replace with minified version when production ready. -->
     <!-- Craftyjs 0.7.1 -->
     <script src ="js/lib/crafty0.7.1.js"></script>
@@ -20,11 +27,9 @@
     
     <!-- TODO: Supply main file here. -->
     <script type="text/javascript">
-      var PATH_PROJECT = "../game/TheWizardsTower-JS/";
-      var PATH_BOARD = PATH_PROJECT + "Boards/";
-      var PATH_MEDIA = PATH_PROJECT + "Media/";
-      var PATH_TILESET = PATH_PROJECT + "Tiles/";
-      setup("");
+       window.onload = function () {
+        setup("");
+       };
     </script>
   </body>
 </html>
