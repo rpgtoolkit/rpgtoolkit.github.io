@@ -1,0 +1,74 @@
+{
+  "x": 0,
+  "y": 0,
+  "layer": 0,
+  "graphics": {
+    "elapsed": 0,
+    "frameIndex": 0,
+    "active": {},
+    "north": {
+      "frameRate": 0.2,
+      "frames": [
+        "Hero_world_walk_north1.png",
+        "Hero_world_walk_north2.png"
+      ],
+      "animationHeight": 57,
+      "soundEffect": "",
+      "animationWidth": 39,
+      "boundingBox": {
+        "x": -20,
+        "y": 10,
+        "width": 40,
+        "height": 15
+      }
+    },
+    "south": {
+      "frameRate": 0.2,
+      "frames": [
+        "Hero_world_south_walk1.png",
+        "Hero_world_south_walk2.png"
+      ],
+      "animationHeight": 57,
+      "soundEffect": "",
+      "animationWidth": 39,
+      "boundingBox": {
+        "x": -20,
+        "y": 10,
+        "width": 40,
+        "height": 15
+      }
+    },
+    "east": {
+      "frameRate": 0.2,
+      "frames": [
+        "Hero_world_walk_east1.png",
+        "Hero_world_walk_east2.png"
+      ],
+      "animationHeight": 57,
+      "soundEffect": "",
+      "animationWidth": 39,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 40,
+        "height": 15
+      }
+    },
+    "west": {
+      "frameRate": 0.2,
+      "frames": [
+        "Hero_world_walk_west1.png",
+        "Hero_world_walk_west2.png"
+      ],
+      "animationHeight": 57,
+      "soundEffect": "",
+      "animationWidth": 39,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 40,
+        "height": 15
+      }
+    }
+  }
+}

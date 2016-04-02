@@ -1,5 +1,5 @@
 function board(filename) {
-  // synchronous request for binary
+  // TODO: Make the changes here that chrome suggests.
   var req = new XMLHttpRequest();
   req.open("GET", filename, false);
   req.overrideMimeType("text/plain; charset=x-user-defined");

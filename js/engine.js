@@ -14,14 +14,14 @@ var currentPlayer;
  */
 function setup(filename) {
   Crafty.init(640, 480);
+  Crafty.canvasLayer.init();
   Crafty.viewport.init(640, 480);
-
+  
   currentBoard = new board(PATH_BOARD + "Room0.brd.json");
   loadBoard(currentBoard);
 
   // Setup the Player.
-  var tkPlayer = new player("");
-  tkPlayer.graphics.active = tkPlayer.graphics.south;
+  var tkPlayer = new player(PATH_CHARACTER + "Hero.tem.json");
   tkPlayer.x = currentBoard.startingPositionX;
   tkPlayer.y = currentBoard.startingPositionY;
   loadPlayer(tkPlayer);
@@ -57,6 +57,7 @@ function loadBoard(board) {
   /*
    * Setup player.
    */
+  // Set the player starting layer and position etc.
 
   /*
    * Play background music.

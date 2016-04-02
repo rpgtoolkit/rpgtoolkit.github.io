@@ -36,7 +36,7 @@ screenRenderer.prototype.render = function (context) {
      * Step 4: Render the player above everything on this layer.
      */
     // TODO: if the player is on this layer render them now.
-    if (currentPlayer.player.layer === i) {
+    if (currentPlayer.player.layer === i && currentPlayer.player.renderReady) {
       var frame = currentPlayer.player.graphics.active.frames[currentPlayer.player.graphics.frameIndex];
       context.drawImage(
               frame,

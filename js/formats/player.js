@@ -1,103 +1,29 @@
-var north_frame1 = new Image();
-north_frame1.src = "../game/TheWizardsTower-JS/Bitmap/Hero_world_walk_north1.png";
-var north_frame2 = new Image();
-north_frame2.src = "../game/TheWizardsTower-JS/Bitmap/Hero_world_walk_north2.png";
-
-var south_frame1 = new Image();
-south_frame1.src = "../game/TheWizardsTower-JS/Bitmap/Hero_world_south_walk1.png";
-var south_frame2 = new Image();
-south_frame2.src = "../game/TheWizardsTower-JS/Bitmap/Hero_world_south_walk2.png";
-
-var east_frame1 = new Image();
-east_frame1.src = "../game/TheWizardsTower-JS/Bitmap/Hero_world_walk_east1.png";
-var east_frame2 = new Image();
-east_frame2.src = "../game/TheWizardsTower-JS/Bitmap/Hero_world_walk_east2.png";
-
-var west_frame1 = new Image();
-west_frame1.src = "../game/TheWizardsTower-JS/Bitmap/Hero_world_walk_west1.png";
-var west_frame2 = new Image();
-west_frame2.src = "../game/TheWizardsTower-JS/Bitmap/Hero_world_walk_west2.png";
-
 function player(filename) {
-  this.x = 0;
-  this.y = 0;
-  this.layer = 0;
-  this.direction = 1;
-  this.input = {
-    up: false,
-    down: false,
-    left: false,
-    right: false
-  };
-  this.graphics = {
-    elapsed: 0,
-    frameIndex: 0,
-    active: {},
-    north: {
-      frameRate: 0.2,
-      frames: [
-        north_frame1,
-        north_frame2
-      ],
-      animationHeight: 57,
-      soundEffect: "",
-      animationWidth: 39,
-      boundingBox: {
-        x: -20,
-        y: 10,
-        width: 40,
-        height: 15
-      }
-    },
-    south: {
-      frameRate: 0.2,
-      frames: [
-        south_frame1,
-        south_frame2
-      ],
-      animationHeight: 57,
-      soundEffect: "",
-      animationWidth: 39,
-      boundingBox: {
-        x: -20,
-        y: 10,
-        width: 40,
-        height: 15
-      }
-    },
-    east: {
-      frameRate: 0.2,
-      frames: [
-        east_frame1,
-        east_frame2
-      ],
-      animationHeight: 57,
-      soundEffect: "",
-      animationWidth: 39,
-      boundingBox: {
-        x: 0,
-        y: 0,
-        width: 40,
-        height: 15
-      }
-    },
-    west: {
-      frameRate: 0.2,
-      frames: [
-        west_frame1,
-        west_frame2
-      ],
-      animationHeight: 57,
-      soundEffect: "",
-      animationWidth: 39,
-      boundingBox: {
-        x: 0,
-        y: 0,
-        width: 40,
-        height: 15
-      }
-    }
-  };
+  // TODO: Make the changes here that chrome suggests.
+  var req = new XMLHttpRequest();
+  req.open("GET", filename, false);
+  req.overrideMimeType("text/plain; charset=x-user-defined");
+  req.send(null);
+  
+  var player = JSON.parse(req.responseText);
+  
+  // TODO: This smells hacky.
+  player.DirectionEnum = this.DirectionEnum;
+  player.changeGraphics = this.changeGraphics;
+  player.animate = this.animate;
+  player.checkCollisions = this.checkCollisions;
+  player.loadGraphics = this.loadGraphics;
+  player.loadFrames = this.loadFrames;
+  player.frameLoaded = this.frameLoaded;
+  
+  player.direction = this.DirectionEnum.SOUTH;
+  player.renderReady = false;
+  player.framesLoaded = 0;
+  player.totalFrames = 0;
+  
+  player.loadGraphics();
+  
+  return player;
 }
 
 player.prototype.DirectionEnum = {
@@ -105,6 +31,44 @@ player.prototype.DirectionEnum = {
   SOUTH: 1,
   EAST: 2,
   WEST: 3
+};
+
+player.prototype.loadGraphics = function() {
+  // TODO: Convert this to a loop later when the Editor I/O is finialised,
+  // will be based on the graphics index e.g. this.graphics[0].frames etc...
+  this.totalFrames += this.graphics.north.frames.length;
+  this.totalFrames += this.graphics.south.frames.length;
+  this.totalFrames += this.graphics.east.frames.length;
+  this.totalFrames += this.graphics.west.frames.length;
+  
+  this.loadFrames(this.graphics.north.frames);
+  this.loadFrames(this.graphics.south.frames);
+  this.loadFrames(this.graphics.east.frames);
+  this.loadFrames(this.graphics.west.frames);
+};
+
+player.prototype.loadFrames = function (frames) {
+  var len = frames.length;
+  for (var i = 0; i < len; i++) {
+    var img = new Image();
+    img.src = PATH_BITMAP + frames[i];
+    img.onload = this.frameLoaded;
+    frames[i] = img;
+  }
+};
+
+player.prototype.frameLoaded = function () {
+  // Forced to use currentPlayer in here because the object invoking 
+  // the callback isn't a player object!
+  currentPlayer.player.framesLoaded++;
+
+  if (currentPlayer.player.framesLoaded === currentPlayer.player.totalFrames) {
+    currentPlayer.player.graphics.active = currentPlayer.player.graphics.south;
+    currentPlayer.player.renderReady = true;
+    
+    var e = { ctx: Crafty.canvasLayer.context };
+    Crafty.trigger("Draw", e);
+  }
 };
 
 player.prototype.animate = function (step) {
