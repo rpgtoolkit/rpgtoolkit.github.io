@@ -17,6 +17,9 @@ function setup(filename) {
   Crafty.canvasLayer.init();
   Crafty.viewport.init(640, 480);
   
+  // Setup the drawing canvas (game screen).
+  screen = new screenRenderer();
+  
   currentBoard = new board(PATH_BOARD + "Room0.brd.json");
   loadBoard(currentBoard);
 

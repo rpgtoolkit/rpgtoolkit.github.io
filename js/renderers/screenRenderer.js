@@ -1,8 +1,10 @@
-function screenRenderer(board) {
-  this.board = board;
+function screenRenderer() {
+  
 }
 
 screenRenderer.prototype.render = function (context) {
+  this.board = currentBoard;
+  
   // Draw a black background.  
   context.fillStyle = "#000000";
   context.fillRect(0, 0, currentBoard.width * 32, currentBoard.height * 32);
