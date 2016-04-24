@@ -1,37 +1,52 @@
 <!DOCTYPE html>
-  <head>
-    <title>The Wizard's Tower</title>
-    <script type="text/javascript">
-      var PATH_PROJECT = "../game/TheWizardsTower-JS/";
-      var PATH_BITMAP = PATH_PROJECT + "Bitmap/";
-      var PATH_BOARD = PATH_PROJECT + "Boards/";
-      var PATH_CHARACTER = PATH_PROJECT + "Chrs/";
-      var PATH_MEDIA = PATH_PROJECT + "Media/";
-      var PATH_TILESET = PATH_PROJECT + "Tiles/";
-    </script>
-    
-    <!-- TODO Replace with minified version when production ready. -->
-    <!-- Craftyjs 0.7.1 -->
-    <script src ="js/lib/crafty0.7.1.js"></script>
+<html manifest="manifest.appcache">
+<head>
+  <title>The Wizard's Tower</title>
 
-    <!-- I/O Libraries -->
-    <script src="js/io/binaryIO.js"></script>
-    <script src="js/formats/board.js"></script>
-    <script src="js/formats/player.js"></script>
-    <script src="js/formats/tileset.js"></script>
-    <script src="js/renderers/screenRenderer.js"></script>
-    <script src="js/renderers/tilesetRenderer.js"></script>
-    
-  </head>
-  <body>
-    <!-- Import the engine game logic. -->
-    <script src="js/engine.js"></script>
-    
-    <!-- TODO: Supply main file here. -->
-    <script type="text/javascript">
-       window.onload = function () {
-        setup("");
-       };
-    </script>
-  </body>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <script type="text/javascript">
+    var PATH_PROJECT = "../game/TheWizardsTower-JS/";
+    var PATH_BITMAP = PATH_PROJECT + "Bitmap/";
+    var PATH_BOARD = PATH_PROJECT + "Boards/";
+    var PATH_CHARACTER = PATH_PROJECT + "Chrs/";
+    var PATH_ITEM = PATH_PROJECT + "Item/";
+    var PATH_MEDIA = PATH_PROJECT + "Media/";
+    var PATH_PROGRAM = PATH_PROJECT + "Prg/";
+    var PATH_TILESET = PATH_PROJECT + "Tiles/";
+  </script>
+
+  <!-- TODO Replace with minified version when production ready. -->
+  <script src="js/lib/crafty0.7.1.js"></script>
+  <script src="js/lib/jailed/jailed.js"></script>
+
+  <!-- I/O Libraries -->
+  <script src="js/io/binaryIO.js"></script>
+  <script src="js/io/keyboard.js"></script>
+
+  <!-- Formats -->
+  <script src="js/formats/project.js"></script>
+  <script src="js/formats/board.js"></script>
+  <script src="js/formats/item.js"></script>
+  <script src="js/formats/player.js"></script>
+  <script src="js/formats/tileset.js"></script>
+
+  <!-- Renderers -->
+  <script src="js/renderers/screenRenderer.js"></script>
+  <script src="js/renderers/tilesetRenderer.js"></script>
+
+  <!-- RPGCode API-->
+  <script src="js/rpgcode/rpgcode.js"></script>
+</head>
+<body>
+  <!-- Import the engine game logic. -->
+  <script src="js/engine.js"></script>
+
+  <div id="cr-stage" class="center"></div>
+
+  <!-- TODO: Supply main file here. -->
+  <script type="text/javascript">
+    rpgtoolkit.setup("main/The Wizard's Tower.gam.json");
+  </script>
+</body>
 </html>

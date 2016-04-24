@@ -14,11 +14,11 @@ function tileset(filename) {
     tile = [];
 
     // rows
-    for (var x = 0; x < 32; x++) {
+    for (var x = 0; x < rpgtoolkit.tileSize; x++) {
       tileRow = [];
 
       // columns
-      for (var y = 0; y < 32; y++) {
+      for (var y = 0; y < rpgtoolkit.tileSize; y++) {
 
         // store RGB value
         tileRow.push([

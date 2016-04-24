@@ -45,7 +45,40 @@
         "tileset1.tst70",
         "torch_anim.tst2"
     ],
-    "sprites": [],
+    "sprites": [
+      {
+            "fileName": "Block1.itm.json",
+            "initialVariable": "",
+            "multitaskingProgram": "",
+            "layer": 0,
+            "activationType": 0,
+            "loadingVariable": "",
+            "loadingValue": "",
+            "activate": 0,
+            "x": 351,
+            "y": 316,
+            "finalVariable": "",
+            "finalValue": "",
+            "activationProgram": "BlockPushing.js",
+            "initialValue": ""
+        },
+              {
+            "fileName": "Block1.itm.json",
+            "initialVariable": "",
+            "multitaskingProgram": "",
+            "layer": 0,
+            "activationType": 0,
+            "loadingVariable": "",
+            "loadingValue": "",
+            "activate": 0,
+            "x": 300,
+            "y": 316,
+            "finalVariable": "",
+            "finalValue": "",
+            "activationProgram": "BlockPushing.js",
+            "initialValue": ""
+        }
+    ],
     "backgroundMusic": "Tower.mp3",
     "vectors": [
         {
@@ -350,7 +383,7 @@
         ""
     ],
     "programs": [{
-        "fileName": "warp_room0_to_room1.prg",
+        "fileName": "warp_room0_to_room1.js",
         "initialVariable": "",
         "handle": "",
         "layer": 0,
