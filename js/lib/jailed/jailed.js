@@ -131,7 +131,7 @@ if (typeof window == 'undefined') {
      * _JailedSite.js)
      */
     var initNode = function() {
-        require('./_JailedSite.js');
+        require('./JailedSite.js');
     }
 
 
@@ -176,7 +176,7 @@ if (typeof window == 'undefined') {
         window.onload = function(){
             origOnload();
             load(
-                __jailed__path__+'_JailedSite.js',
+                __jailed__path__+'JailedSite.js',
                 function(){ platformInit.emit(); }
             );
         }
@@ -207,7 +207,7 @@ if (typeof window == 'undefined') {
             this._disconnectHandler = function(){};
 
             this._process = childProcess.fork(
-                __jailed__path__+'_pluginNode.js'
+                __jailed__path__+'pluginNode.js'
             );
 
             var me = this;
@@ -302,7 +302,7 @@ if (typeof window == 'undefined') {
 
         // frame element to be cloned
         var sample = document.createElement('iframe');
-        sample.src = __jailed__path__ + '_frame.html';
+        sample.src = __jailed__path__ + 'frame.html';
         sample.sandbox = perm.join(' ');
         sample.style.display = 'none';
 
@@ -658,7 +658,7 @@ if (typeof window == 'undefined') {
         }
 
         this._connection.importScript(
-            __jailed__path__+'_JailedSite.js', sCb, this._fCb
+            __jailed__path__+'JailedSite.js', sCb, this._fCb
         );
     }
 
@@ -674,7 +674,7 @@ if (typeof window == 'undefined') {
         }
 
         this._connection.importScript(
-            __jailed__path__+'_pluginCore.js', sCb, this._fCb
+            __jailed__path__+'pluginCore.js', sCb, this._fCb
         );
     }
     

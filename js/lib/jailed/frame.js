@@ -47,7 +47,7 @@ var initWebworkerPlugin = function() {
     // telling worker to load _pluginWebWorker.js (see blob code above)
     worker.postMessage({
         type: 'initImport',
-        url: __jailed__path__ + '_pluginWebWorker.js'
+        url: __jailed__path__ + 'pluginWebWorker.js'
     });
 
 
@@ -124,7 +124,7 @@ var initIframePlugin = function() {
 
 
     window.loadScript(
-        __jailed__path__ + '_pluginWebIframe.js',
+        __jailed__path__ + 'pluginWebIframe.js',
         function(){}, function(){}
     );
 }
