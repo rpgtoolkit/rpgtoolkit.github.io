@@ -57,7 +57,7 @@ RPGToolkit.prototype.setup = function (filename) {
   Crafty.viewport.follow(this.craftyPlayer, 0, 0);
 
   // Run the startup program before the game logic loop.
-  if (configuration.startupPrg) {
+  if (!configuration.startupPrg) {
     this.runProgram(PATH_PROGRAM + configuration.startupPrg, {}, function () {
       rpgtoolkit.loadBoard();
     });
