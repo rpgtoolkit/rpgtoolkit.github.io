@@ -1,3 +1,5 @@
+/* global rpgtoolkit, rpgcode */
+
 function screenRenderer() {
   this.renderNowCanvas = document.createElement("canvas");
   this.renderNowCanvas.width = Crafty.viewport._width;
@@ -9,7 +11,12 @@ screenRenderer.prototype.render = function (context) {
   var y = -Crafty.viewport._y;
   var width = Crafty.viewport._width;
   var height = Crafty.viewport._height;
-  
+
+  // Shorthand reference.
+  var player = rpgtoolkit.craftyPlayer.player;
+  player.x = rpgtoolkit.craftyPlayer.x;
+  player.y = rpgtoolkit.craftyPlayer.y;
+
   if (rpgtoolkit.craftyBoard.show) {
     this.board = rpgtoolkit.craftyBoard.board;
 
@@ -21,61 +28,49 @@ screenRenderer.prototype.render = function (context) {
       this.board.generateLayerCache();
     }
 
-    var layer, row, tile, source, data, renderer;
-
     // Loop through layers.
     for (var i = 0; i < this.board.layerCount; i++) {
-      layer = this.board.tiles[i];
-
       /*
-       * Step 1: Render this layer. 
+       * Render this layer. 
        */
       context.drawImage(this.board.layerCache[i], x, y, width, height, x, y, width, height);
 
       /*
-       * Step 2: Render items.
+       * Sort sprites for depth.
        */
-      this.board.sprites.forEach(function (entity) {
-        if (i === entity.sprite.layer) {
-          var image = Crafty.asset(Crafty.__paths.images + "block.png");
-          context.drawImage(image, entity.x, entity.y, entity.w, entity.h);
-        }
-      });
+      var layerSprites = this.sortSprites(i, player);
 
       /*
-       * Step 3: Render npcs.
+       * Render sprites.
        */
-      // TODO: render any npcs on this layer.
-
-      /*
-       * Step 4: Render the player above everything on this layer.
-       */
-      var player = rpgtoolkit.craftyPlayer.player;
-      if (player.layer === i && player.renderReady) {
-        var asset = Crafty.__paths.images + player.graphics.active.frames[player.graphics.frameIndex];
+      layerSprites.forEach(function (sprite) {
+        var asset = Crafty.__paths.images +
+                sprite.graphics.active.frames[sprite.graphics.frameIndex];
         var frame = Crafty.assets[asset];
         context.drawImage(
                 frame,
-                rpgtoolkit.craftyPlayer.x - (frame.width / 2),
-                rpgtoolkit.craftyPlayer.y - (frame.height / 2),
-                player.graphics.active.animationWidth,
-                player.graphics.active.animationHeight);
+                sprite.x - (frame.width / 2),
+                sprite.y - frame.height,
+                sprite.graphics.active.animationWidth,
+                sprite.graphics.active.animationHeight);
 
-        // Draw player collision rectangle.
+        // Draw collision rectangle.
+        var boxWidth = sprite.graphics.active.boundingBox.width;
+        var boxHeight = sprite.graphics.active.boundingBox.height;
         context.beginPath();
         context.lineWidth = "2";
         context.strokeStyle = "#FFFFFF";
         context.rect(
-                rpgtoolkit.craftyPlayer.x - 15,
-                rpgtoolkit.craftyPlayer.y + 10,
-                player.graphics.active.boundingBox.width,
-                player.graphics.active.boundingBox.height);
+                sprite.x - (boxWidth / 2),
+                sprite.y - boxHeight,
+                boxWidth,
+                boxHeight);
         context.stroke();
-      }
+      });
     }
 
     /*
-     * Step 5: (Optional) Render Vectors.
+     * (Optional) Render Vectors.
      */
     this.board.vectors.forEach(function (vector) {
       var haveMoved = false;
@@ -95,7 +90,7 @@ screenRenderer.prototype.render = function (context) {
     }, this);
 
     /*
-     * Step 6: (Optional) Render Programs.
+     * (Optional) Render Programs.
      */
     this.board.programs.forEach(function (program) {
       var haveMoved = false;
@@ -116,9 +111,9 @@ screenRenderer.prototype.render = function (context) {
   }
 
   /*
-   * Step 7: Render rpgcode canvases.
+   * Render rpgcode canvases.
    */
-  var canvases = rpgtoolkit.rpgcodeApi.canvases;
+  var canvases = rpgcode.canvases;
   for (var property in canvases) {
     if (canvases.hasOwnProperty(property)) {
       var element = canvases[property];
@@ -127,4 +122,27 @@ screenRenderer.prototype.render = function (context) {
       }
     }
   }
+};
+
+screenRenderer.prototype.sortSprites = function (layer, player) {
+  var layerSprites = [];
+  if (player.layer === layer && player.renderReady) {
+    layerSprites.push(player);
+  }
+
+  this.board.sprites.forEach(function (entity) {
+    var sprite = entity.sprite;
+    var item = sprite.item;
+    if (layer === sprite.layer && item.renderReady) {
+      sprite.item.x = entity.x;
+      sprite.item.y = entity.y;
+      layerSprites.push(sprite.item);
+    }
+  });
+
+  layerSprites.sort(function (a, b) {
+    return a.y - b.y;
+  });
+  
+  return layerSprites;
 };

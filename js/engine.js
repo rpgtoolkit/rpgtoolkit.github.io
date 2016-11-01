@@ -1,3 +1,5 @@
+/* global PATH_BITMAP, PATH_MEDIA, PATH_PROGRAM, PATH_BOARD, PATH_CHARACTER, PATH_ITEM, jailed, rpgcode */
+
 var rpgtoolkit = new RPGToolkit();
 
 function RPGToolkit() {
@@ -6,9 +8,16 @@ function RPGToolkit() {
   this.craftyBoard = {};
   this.craftyPlayer = {};
   this.tilesets = {};
-  this.rpgcodeApi = {};
   this.keyboardHandler = {};
   this.tileSize = 32;
+
+  // Program cache, stores programs as Function objects.
+  this.programCache = {};
+
+  // Used to store state when runProgram is called.
+  this.endProgramCallback = null;
+  this.keyDownHandlers = null;
+  this.keyUpHandlers = null;
 }
 
 /**
@@ -25,26 +34,35 @@ RPGToolkit.prototype.setup = function (filename) {
   Crafty.viewport.init(configuration.resolutionWidth, configuration.resolutionHeight);
   Crafty.paths({audio: PATH_MEDIA, images: PATH_BITMAP});
 
+  // Setup run time keys.
   this.keyboardHandler = new keyboard();
+  this.keyboardHandler.downHandlers[configuration.menuKey] = function () {
+    rpgtoolkit.runProgram(PATH_PROGRAM + configuration.menuPlugin, {});
+  };
 
   // Setup the drawing canvas (game screen).
   this.screen = new screenRenderer();
+
+  // Setup the RPGcode rutime.
+  rpgcode = new RPGcode();
+
+  // Create the initial board.
   this.createCraftyBoard(new board(PATH_BOARD + configuration.initBoard));
 
   // Setup the Player.
-  var tkPlayer = new player(PATH_CHARACTER + configuration.initChar);
+  var tkPlayer = new Player(PATH_CHARACTER + configuration.initChar);
   tkPlayer.x = this.craftyBoard.board.startingPositionX;
   tkPlayer.y = this.craftyBoard.board.startingPositionY;
   this.loadPlayer(tkPlayer);
   Crafty.viewport.follow(this.craftyPlayer, 0, 0);
-
-  this.rpgcodeApi = new rpgcode();
 
   // Run the startup program before the game logic loop.
   if (configuration.startupPrg) {
     this.runProgram(PATH_PROGRAM + configuration.startupPrg, {}, function () {
       rpgtoolkit.loadBoard();
     });
+  } else {
+    rpgtoolkit.loadBoard();
   }
 };
 
@@ -108,8 +126,10 @@ RPGToolkit.prototype.loadBoard = function () {
   var len = board.sprites.length;
   for (var i = 0; i < len; i++) {
     var sprite = board.sprites[i];
-    sprite.item = new item(PATH_ITEM + sprite.fileName);
-    board.sprites[i] = this.loadSprite(sprite);
+    sprite.item = new Item(PATH_ITEM + sprite.fileName);
+    var boardSprite = this.loadSprite(sprite);
+    boardSprite.sprite.item.load();
+    board.sprites[i] = boardSprite;
   }
 
   /*
@@ -154,7 +174,7 @@ RPGToolkit.prototype.loadPlayer = function (tkPlayer) {
             y: tkPlayer.y,
             player: tkPlayer})
           .fourway(50)
-          .collision(new Crafty.polygon([-15, 10, 15, 10, 15, 25, -15, 25]))
+          .collision(new Crafty.polygon([-15, -10, 15, -10, -15, 0, 15, 0]))
           .checkHits("Solid")
           .bind("HitOn", function (hitData) {
             this.player.checkCollisions(hitData[0], this);
@@ -185,65 +205,78 @@ RPGToolkit.prototype.loadPlayer = function (tkPlayer) {
             this.dt = event.dt / 1000;
           });
   this.craftyPlayer.visible = false;
-  this.craftyPlayer.player.loadGraphics();
+  this.craftyPlayer.player.load();
 };
 
 RPGToolkit.prototype.loadSprite = function (sprite) {
-  // TODO: width and height of item must be contain the collision polygon.
+  // TODO: width and height of item must contain the collision polygon.
   var attr = {
     x: sprite.x,
     y: sprite.y,
     layer: sprite.layer,
-    w: 32,
-    h: 32,
+    w: this.tileSize,
+    h: this.tileSize,
     vectorType: "item",
     sprite: sprite
   };
   var entity = Crafty.e("2D, Solid, Collision")
           .attr(attr)
           .checkHits("Solid")
-          .collision(new Crafty.polygon([0, 0, 32, 0, 32, 32, 0, 32]))
+          .collision(new Crafty.polygon([-16, -32, 16, -32, 16, 0, -16, 0]))
           .bind("HitOn", function (hitData) {
-            var vectorType = hitData[0].obj.vectorType;
-            switch (vectorType) {
-              case "solid":
-                this.x += hitData[0].normal.x;
-                this.y += hitData[0].normal.y;
-                break;
-              case "item":
-                console.log(hitData[0]);
-                this.x += hitData[0].normal.x;
-                this.y += hitData[0].normal.y;
-                break;
-            }
-
-            this.resetHitChecks();
+            this.sprite.item.checkCollisions(hitData[0], this);
           });
   entity.visible = false;
   return entity;
 };
 
-RPGToolkit.prototype.runProgram = function (filename, source, callback) {
-  // Provide the full path for Jailed.
-  var host = location.protocol
-          .concat("//")
-          .concat(window.location.hostname)
-          .concat(":".concat(location.port));
+RPGToolkit.prototype.openProgram = function (filename) {
+  var program = rpgtoolkit.programCache[filename];
 
-  this.rpgcodeApi.source = source; // Entity that triggered the program.
+  if (!program) {
+    // TODO: Make the changes here that chrome suggests.
+    var req = new XMLHttpRequest();
+    req.open("GET", filename, false);
+    req.overrideMimeType("text/plain; charset=x-user-defined");
+    req.send(null);
+
+    program = new Function(req.responseText);
+    rpgtoolkit.programCache[filename] = program;
+  }
+
+  return program;
+};
+
+RPGToolkit.prototype.runProgram = function (filename, source, callback) {
+  rpgcode.source = source; // Entity that triggered the program.
 
   rpgtoolkit.craftyPlayer.disableControl();
 
-  var program = new jailed.Plugin(host + "/" + filename, this.rpgcodeApi.api);
-  program.whenConnected(function () {
+  // Store endProgram callback and runtime key handlers.
+  rpgtoolkit.endProgramCallback = callback;
+  rpgtoolkit.keyDownHandlers = rpgtoolkit.keyboardHandler.downHandlers;
+  rpgtoolkit.keyUpHandlers = rpgtoolkit.keyboardHandler.upHandlers;
+  rpgtoolkit.keyboardHandler.downHandlers = {};
+  rpgtoolkit.keyboardHandler.upHandlers = {};
 
-  });
-  program.whenDisconnected(function () {
-    if (callback) {
-      callback();
+  var program = rpgtoolkit.openProgram(filename);
+  program();
+};
+
+RPGToolkit.prototype.endProgram = function (nextProgram) {
+  if (nextProgram) {
+    rpgtoolkit.runProgram(PATH_PROGRAM + nextProgram, rpgcode.source,
+            rpgtoolkit.endProgramCallback);
+  } else {
+    if (rpgtoolkit.endProgramCallback) {
+      rpgtoolkit.endProgramCallback();
+      rpgtoolkit.endProgramCallback = null;
     }
+
+    rpgtoolkit.keyboardHandler.downHandlers = rpgtoolkit.keyDownHandlers;
+    rpgtoolkit.keyboardHandler.upHandlers = rpgtoolkit.keyUpHandlers;
     rpgtoolkit.craftyPlayer.enableControl();
-  });
+  }
 };
 
 RPGToolkit.prototype.createSolidVector = function (x1, y1, x2, y2, layer) {

@@ -1,3 +1,4 @@
-var rpgcode = application.remote;
-rpgcode.clearCanvas("renderNowCanvas");
-application.disconnect();
+/* global rpgcode */
+
+rpgcode.clearDialog();
+rpgcode.endProgram();

@@ -40,55 +40,7 @@
     ],
     "sprites": [
         {
-            "fileName": "Block1.itm.json",
-            "initialVariable": "",
-            "multitaskingProgram": "",
-            "layer": 0,
-            "activationType": 0,
-            "loadingVariable": "",
-            "loadingValue": "",
-            "activate": 0,
-            "x": 256,
-            "y": 159,
-            "finalVariable": "",
-            "finalValue": "",
-            "activationProgram": "BlockPushing.js",
-            "initialValue": ""
-        },
-        {
-            "fileName": "Block1.itm.json",
-            "initialVariable": "",
-            "multitaskingProgram": "",
-            "layer": 0,
-            "activationType": 0,
-            "loadingVariable": "",
-            "loadingValue": "",
-            "activate": 0,
-            "x": 352,
-            "y": 159,
-            "finalVariable": "",
-            "finalValue": "",
-            "activationProgram": "BlockPushing.js",
-            "initialValue": ""
-        },
-        {
-            "fileName": "Block1.itm.json",
-            "initialVariable": "",
-            "multitaskingProgram": "",
-            "layer": 0,
-            "activationType": 0,
-            "loadingVariable": "",
-            "loadingValue": "",
-            "activate": 0,
-            "x": 288,
-            "y": 200,
-            "finalVariable": "",
-            "finalValue": "",
-            "activationProgram": "BlockPushing.js",
-            "initialValue": ""
-        },
-        {
-            "fileName": "Block1.itm.json",
+            "fileName": "Eye.itm.json",
             "initialVariable": "",
             "multitaskingProgram": "",
             "layer": 0,
@@ -97,10 +49,10 @@
             "loadingValue": "",
             "activate": 0,
             "x": 320,
-            "y": 200,
+            "y": 300,
             "finalVariable": "",
             "finalValue": "",
-            "activationProgram": "BlockPushing.js",
+            "activationProgram": "BATTLE_SYSTEM.js",
             "initialValue": ""
         }
     ],
@@ -498,26 +450,26 @@
             "initialValue": ""
         },
         {
-            "fileName": "warp_room2_to_room3.js",
+            "fileName": "GameOver.js",
             "initialVariable": "",
             "handle": "",
             "layer": 1,
             "points": [
                 {
                     "x": 288,
-                    "y": 128
+                    "y": 148
                 },
                 {
                     "x": 288,
-                    "y": 160
+                    "y": 180
                 },
                 {
                     "x": 352,
-                    "y": 160
+                    "y": 180
                 },
                 {
                     "x": 352,
-                    "y": 128
+                    "y": 148
                 }
             ],
             "activationType": 0,
@@ -530,7 +482,7 @@
             "initialValue": ""
         },
         {
-            "fileName": "TalkingSword_room2.js",
+            "fileName": "BATTLE_SYSTEM.js",
             "initialVariable": "",
             "handle": "",
             "layer": 1,
@@ -550,70 +502,6 @@
                 {
                     "x": 448,
                     "y": 352
-                }
-            ],
-            "activationType": 0,
-            "isClosed": false,
-            "distanceRepeat": 0,
-            "activate": 0,
-            "finalVariable": "",
-            "finalValue": "",
-            "graphic": "",
-            "initialValue": ""
-        },
-        {
-            "fileName": "TalkingSword_room1_2.js",
-            "initialVariable": "",
-            "handle": "",
-            "layer": 1,
-            "points": [
-                {
-                    "x": 192,
-                    "y": 256
-                },
-                {
-                    "x": 192,
-                    "y": 288
-                },
-                {
-                    "x": 448,
-                    "y": 288
-                },
-                {
-                    "x": 448,
-                    "y": 256
-                }
-            ],
-            "activationType": 0,
-            "isClosed": false,
-            "distanceRepeat": 0,
-            "activate": 0,
-            "finalVariable": "",
-            "finalValue": "",
-            "graphic": "",
-            "initialValue": ""
-        },
-        {
-            "fileName": "TalkingSword_room1_2.js",
-            "initialVariable": "",
-            "handle": "",
-            "layer": 1,
-            "points": [
-                {
-                    "x": 192,
-                    "y": 448
-                },
-                {
-                    "x": 192,
-                    "y": 480
-                },
-                {
-                    "x": 448,
-                    "y": 480
-                },
-                {
-                    "x": 448,
-                    "y": 448
                 }
             ],
             "activationType": 0,

@@ -20,5 +20,70 @@
         "y": 32
       }
     ]
+  },
+  "graphics": {
+    "elapsed": 0,
+    "frameIndex": 0,
+    "active": {},
+    "north": {
+      "frameRate": 0.2,
+      "frames": [
+        "block.png"
+      ],
+      "animationHeight": 64,
+      "soundEffect": "",
+      "animationWidth": 32,
+      "boundingBox": {
+        "x": -20,
+        "y": 10,
+        "width": 32,
+        "height": 32
+      }
+    },
+    "south": {
+      "frameRate": 0.2,
+      "frames": [
+        "block.png"
+      ],
+      "animationHeight": 64,
+      "soundEffect": "",
+      "animationWidth": 32,
+      "boundingBox": {
+        "x": -15,
+        "y": 10,
+        "width": 32,
+        "height": 32
+      }
+    },
+    "east": {
+      "frameRate": 0.2,
+      "frames": [
+        "block.png"
+      ],
+      "animationHeight": 64,
+      "soundEffect": "",
+      "animationWidth": 32,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 32
+      }
+    },
+    "west": {
+      "frameRate": 0.2,
+      "frames": [
+        "block.png"
+      ],
+      "animationHeight": 64,
+      "soundEffect": "",
+      "animationWidth": 32,
+      "boundingBox": {
+        "x": 0,
+        "y": 0,
+        "width": 32,
+        "height": 32
+      }
+    }
   }
 }

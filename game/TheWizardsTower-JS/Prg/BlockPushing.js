@@ -1,6 +1,4 @@
-var rpgcode = application.remote;
+/* global rpgcode */
 
-rpgcode.getPlayerDirection(function(direction) {
-  rpgcode.pushItem("source", direction);
-  application.disconnect();
-});
+rpgcode.pushItem("source", rpgcode.getPlayerDirection());
+rpgcode.endProgram();

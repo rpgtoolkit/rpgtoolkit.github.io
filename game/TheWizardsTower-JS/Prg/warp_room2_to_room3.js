@@ -1,10 +1,5 @@
-var rpgcode = application.remote;
+/* global rpgcode */
 
 rpgcode.sendToBoard("Room3.brd.json", 11, 14);
 rpgcode.clearCanvas("renderNowCanvas");
-
-application.disconnect(); 
-
-
-
-
+rpgcode.endProgram(); 

@@ -69,6 +69,104 @@
         "width": 30,
         "height": 15
       }
+    },
+    "custom": {
+      "attackNorth": {
+        "frameRate": 0.2,
+        "frames": [
+          "Idle_north.png",
+          "attack1_north.png",
+          "attack2_north.png"
+        ],
+        "animationHeight": 90,
+        "soundEffect": "hit.wav",
+        "animationWidth": 55,
+        "boundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 30,
+          "height": 15
+        }
+      },
+      "useCure": {
+        "frameRate": 0.2,
+        "frames": [
+          "Hero_world_north_idle_cure.png"
+        ],
+        "animationHeight": 57,
+        "soundEffect": "item.wav",
+        "animationWidth": 39,
+        "boundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 30,
+          "height": 15
+        }
+      },
+      "useEther": {
+        "frameRate": 0.2,
+        "frames": [
+          "Hero_world_north_idle_ether.png"
+        ],
+        "animationHeight": 57,
+        "soundEffect": "item.wav",
+        "animationWidth": 39,
+        "boundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 30,
+          "height": 15
+        }
+      },
+      "useElixer": {
+        "frameRate": 0.2,
+        "frames": [
+          "Hero_world_north_idle_cure.png",
+          "Hero_world_north_idle_ether.png"
+        ],
+        "animationHeight": 57,
+        "soundEffect": "item.wav",
+        "animationWidth": 39,
+        "boundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 30,
+          "height": 15
+        }
+      },
+      "speakSword": {
+        "frameRate": 0.2,
+        "frames": [
+          "takesword5.png"
+        ],
+        "animationHeight": 78,
+        "soundEffect": "",
+        "animationWidth": 50,
+        "boundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 30,
+          "height": 15
+        }
+      },
+      "hurtSpin": {
+        "frameRate": 0.2,
+        "frames": [
+          "Hero_world_north_idle_hurt.png",
+          "Hero_world_walk_east2_hurt.png",
+          "Hero_world_south_idle_hurt.png",
+          "Hero_world_walk_west2_hurt.png"
+        ],
+        "animationHeight": 57,
+        "soundEffect": "hit.wav",
+        "animationWidth": 39,
+        "boundingBox": {
+          "x": 0,
+          "y": 0,
+          "width": 30,
+          "height": 15
+        }
+      }
     }
   }
 }

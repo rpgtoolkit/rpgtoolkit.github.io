@@ -8,6 +8,7 @@ function board(filename) {
   var board = JSON.parse(req.responseText);
   board.tiles = [];
   board.layerCache = [];
+  board.filename = filename;
 
   var skipTiles = 0, tileIndex = 0;
 

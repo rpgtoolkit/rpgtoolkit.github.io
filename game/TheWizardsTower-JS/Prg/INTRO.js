@@ -1,4 +1,4 @@
-var rpgcode = application.remote;
+/* global rpgcode */
 
 var canvas = "flashingText";
 
@@ -36,6 +36,7 @@ var isShowingIntro = false;
 
 rpgcode.loadAssets(assets, function () {
   rpgcode.setGlobal("swordactive", false);
+  rpgcode.setDialogGraphics("sword_profile_1_small.png", "mwin_small.png");
 
   rpgcode.setImage("startscreen.png", 0, 0, 640, 480);
   rpgcode.setColor(0, 0, 0, 1.0);
@@ -46,7 +47,7 @@ rpgcode.loadAssets(assets, function () {
 
   rpgcode.playSound("intro", true);
 
-  rpgcode.keyDown("ENTER", showIntro);
+  rpgcode.registerKeyDown("ENTER", showIntro);
 });
 
 function flashText() {
@@ -108,5 +109,6 @@ function finish() {
     "images": [
       "startscreen.png"
     ]});
-  application.disconnect();
+  rpgcode.unregisterKeyDown("ENTER");
+  rpgcode.endProgram();
 }

@@ -1,8 +1,7 @@
-var rpgcode = application.remote;
+/* global rpgcode */
 
 rpgcode.sendToBoard("Room0.brd.json", 11, 7);
-
-application.disconnect(); 
+rpgcode.endProgram();
 
 
 

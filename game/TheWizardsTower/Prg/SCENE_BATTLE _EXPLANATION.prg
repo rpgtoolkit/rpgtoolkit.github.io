@@ -1,0 +1,135 @@
+if (battle_explanation==true){end()}
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"Ok I think I should explain a few things before we proceed")
+pixeltext(105,30,"any further.")
+delay(1)
+wait(a)
+
+setimage("BEXshot1.png",0,0,637,475)
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"When you aproach an enemy a battle will start and we take")
+pixeltext(105,30,"it in turns to perform actions.")
+wait(a)
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"Because I'm a magic sword I can perform my own actions in")
+pixeltext(105,30,"battle.")
+wait(a)
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"Unfortunatly I have no arms or legs so I can't attack")
+pixeltext(105,30,"or use Items, but I can use magic.")
+wait(a)
+
+setimage("BEXshot7.png",0,0,637,475)
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"So when it's my turn I can use any spells we have.")
+pixeltext(105,30,"Or I can provoke the enemy.")
+wait(a)
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"Provoke has a chance of making the enemy miss his turn.")
+wait(a)
+
+setimage("BEXshot5.png",0,0,637,475)
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"On your turn you can use items or attack the enemy.")
+pixeltext(105,30,"")
+wait(a)
+
+setimage("BEXshot6.png",0,0,637,475)
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"You can always tell whos turn it is by the profile picture")
+pixeltext(105,30,"here.")
+wait(a)
+
+setimage("BEXshot3.png",0,0,637,475)
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"These hearts here are your health. When they get depleated")
+pixeltext(105,30,"you will die. I myself don't have any health but having no")
+wait(a)
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"arms or legs means I depend on you, so if you die the")
+pixeltext(105,30,"adventure is over.")
+wait(a)
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"You can recover hearts from drinking a Health Potion.")
+wait(a)
+
+setimage("BEXshot4.png",0,0,637,475)
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"These orbs are my mana. If they are empty I cannot perform")
+pixeltext(105,30,"any more spells.")
+wait(a)
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"You can recover mana by drinking a Mana Potion")
+pixeltext(105,30,"")
+wait(a)
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"And don't ask how you drinking a potion recovers my Mana.")
+pixeltext(105,30,"I've not figured out an explanation for that yet.")
+wait(a)
+
+setimage("BEXshot7.png",0,0,637,475)
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"I come equipped with the Fire Orb but we should be able to")
+pixeltext(105,30,"find more magic orbs around this tower.")
+wait(a)
+
+setimage("BEXshot9.png",0,0,637,475)
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"You can view what spells and potions we have in the")
+pixeltext(105,30,"inventory(press enter outside of battle to access it)")
+wait(a)
+
+setimage("mwin_small.png",100,0,450,50)
+setimage("sword_profile_1_small.png",0,0,100,100)
+colorrgb(255,255,255)
+pixeltext(105,10,"Ok that's enough talk.")
+pixeltext(105,30,"Lets go kill something.")
+wait(a)
+
+
+battle_explanation=true
+
+
+
+
+
