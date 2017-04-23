@@ -1,5 +1,0 @@
-
-Clear(cnvRenderNow)
-
-
-

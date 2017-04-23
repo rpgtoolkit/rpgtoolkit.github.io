@@ -1,112 +1,75 @@
-function board(filename) {
-  // TODO: Make the changes here that chrome suggests.
-  var req = new XMLHttpRequest();
-  req.open("GET", filename, false);
-  req.overrideMimeType("text/plain; charset=x-user-defined");
-  req.send(null);
+/* global rpgtoolkit */
 
-  var board = JSON.parse(req.responseText);
-  board.tiles = [];
-  board.layerCache = [];
-  board.filename = filename;
+function Board(filename) {
+    console.info("Loading Board filename=[%s]", filename);
+    
+    // TODO: Make the changes here that chrome suggests.
+    var req = new XMLHttpRequest();
+    req.open("GET", filename, false);
+    req.overrideMimeType("text/plain; charset=x-user-defined");
+    req.send(null);
 
-  var skipTiles = 0, tileIndex = 0;
-
-  // loop through layers
-  for (var layer = 0; layer < board.layerCount; layer++) {
-    var currentLayer = [];
-
-    // y axis
-    for (var y = 0; y < board.height; y++) {
-      var currentColumn = [];
-
-      // x axis
-      for (var x = 0; x < board.width; x++) {
-
-        // if still repeating for X tiles
-        if (skipTiles > 0) {
-          skipTiles -= 1;
-          currentColumn.push(tileIndex);
-        } else {
-          // get tile
-          tileIndex = board.tileIndex.shift();
-
-          // if tile is less than -X, means we're repeating the next tile for (-X) -1
-          if (tileIndex < 0) {
-            skipTiles = (-tileIndex) - 1;
-
-            // get tile to be repeated
-            tileIndex = board.tileIndex.shift();
-          }
-
-          currentColumn.push(tileIndex);
-        }
-      }
-
-      currentLayer.push(currentColumn);
+    var board = JSON.parse(req.responseText);
+    for (var property in board) {
+        this[property] = board[property];
     }
 
-    board.tiles.push(currentLayer);
-  }
-  
-  board.generateLayerCache = this.generateLayerCache;
-  board.getTileData = this.getTileData;
-  return board;
+    this.layerCache = [];
+}
+
+Board.prototype.setReady = function () {
+    console.info("Setting ready Board name=[%s]", this.name);
+    rpgtoolkit.craftyBoard.show = true;
 };
 
-board.prototype.generateLayerCache = function () {
-  var cnvLayer, context, layer, row, tile, source, data, renderer;
-  this.layerCache = [];
+Board.prototype.generateLayerCache = function () {
+    console.info("Generating the layer cache for Board name=[%s]", this.name);
+    
+    this.layerCache = [];
 
-  // Loop through layers.
-  for (var i = 0; i < this.layerCount; i++) {
-    cnvLayer = document.createElement("canvas");
-    cnvLayer.width = this.width * rpgtoolkit.tileSize;
-    cnvLayer.height = this.height * rpgtoolkit.tileSize;
-    context = cnvLayer.getContext("2d");
-    layer = this.tiles[i];
+    // Loop through layers
+    var board = this;
+    this.layers.forEach(function (layer) {
+        var cnvLayer = document.createElement("canvas");
+        cnvLayer.width = board.width * board.tileWidth;
+        cnvLayer.height = board.height * board.tileHeight;
+        var context = cnvLayer.getContext("2d");
 
-    /*
-     * Step 1: Render this layer's tiles. 
-     */
-    // y axis
-    for (var y = 0; y < layer.length; y++) {
-      row = layer[y];
+        // Render the layer tiles
+        var tiles = layer.tiles.slice();
+        for (var y = 0; y < board.height; y++) {
+            for (var x = 0; x < board.width; x++) {
+                var tile = tiles.shift().split(":");
+                var tileSetIndex = parseInt(tile[0]);
+                var tileIndex = parseInt(tile[1]);
+                
+                if (tileSetIndex === -1 || tileIndex === -1) {
+                    continue; // Blank tile.
+                }
 
-      // x axis
-      for (var x = 0; x < row.length; x++) {
-        tile = row[x] - 1;
+                var tileSet = board.tileSets[tileSetIndex];
+                var renderer = new TilesetRenderer(rpgtoolkit.tilesets[tileSet]);
 
-        if (tile > -1) {
-          source = this.tileNames[tile];
-
-          if (source) {
-            // extract data (filename and index)
-            data = this.getTileData(source);
-
-            // load tileset
-            if (rpgtoolkit.tilesets[data.tileset] === undefined) {
-              rpgtoolkit.tilesets[data.tileset] = new tileset(PATH_TILESET + data.tileset);
+                // Render tile to board canvas
+                renderer.renderTile(
+                        context, tileIndex,
+                        x * board.tileWidth, y * board.tileHeight);
             }
-
-            renderer = new tilesetRenderer(rpgtoolkit.tilesets[data.tileset]);
-
-            // render tile to board canvas
-            renderer.renderTile(context, data["tile"] - 1, x * rpgtoolkit.tileSize, y * rpgtoolkit.tileSize);
-          }
         }
-      }
-    }
 
-    this.layerCache.push(cnvLayer);
-  }
+        board.layerCache.push(cnvLayer);
+    });
 };
 
-board.prototype.getTileData = function (source) {
-  var splitPoint = source.indexOf(".tst") + 4;
-  return {
-    tileset: source.substring(0, splitPoint),
-    tile: source.substring(splitPoint)
-  };
+Board.prototype.replaceTile = function(x, y, layer, newTile) {
+    var context = this.layerCache[layer].getContext("2d");
+    
+    context.putImageData(newTile, x * this.tileWidth, y * this.tileHeight);
+};
+
+Board.prototype.removeTile = function(x, y, layer) {
+    var context = this.layerCache[layer].getContext("2d");
+    
+    context.clearRect(x * this.tileWidth, y * this.tileHeight, this.tileWidth, this.tileHeight);
 };
   

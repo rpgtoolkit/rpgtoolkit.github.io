@@ -1,43 +1,40 @@
-Item.prototype = new Sprite();
+/* global Sprite */
+
+Item.prototype = Object.create(Sprite.prototype);
 Item.prototype.constructor = Item;
 
 function Item(filename) {
-  // TODO: Make the changes here that chrome suggests.
-  var req = new XMLHttpRequest();
-  req.open("GET", filename, false);
-  req.overrideMimeType("text/plain; charset=x-user-defined");
-  req.send(null);
-  
-  var item  = JSON.parse(req.responseText);
-  
-  item.DirectionEnum = this.DirectionEnum;
-  item.changeGraphics = this.changeGraphics;
-  item.animate = this.animate;
-  item.checkCollisions = this.checkCollisions;
-  item.load = this.load;
-  item.loadFrames = this.loadFrames;
-  item.loadSoundEffects = this.loadSoundEffects;
-  item.loadAssets = this.loadAssets;
+    console.info("Loading Item filename=[%s]", filename);
+    Sprite.call(this);
 
-  item.direction = this.DirectionEnum.SOUTH;
-  item.setReady = this.setReady;
-  item.renderReady = false;
-  
-  return item;
+    // TODO: Make the changes here that chrome suggests.
+    var req = new XMLHttpRequest();
+    req.open("GET", filename, false);
+    req.overrideMimeType("text/plain; charset=x-user-defined");
+    req.send(null);
+
+    var item = JSON.parse(req.responseText);
+    for (var property in item) {
+        this[property] = item[property];
+    }
+    
+    this.calculateCollisionPoints();
 }
 
 Item.prototype.checkCollisions = function (collision, entity) {
-  var object = collision.obj;
-  switch (object.vectorType) {
-    case "item":
-      entity.x += collision.normal.x;
-      entity.y += collision.normal.y;
-      entity.resetHitChecks();
-      break;
-    case "solid":
-      entity.x += collision.normal.x;
-      entity.y += collision.normal.y;
-      entity.resetHitChecks();
-      break;
-  }
+    console.debug("Checking collisions for Item name=[%s]", this.name);
+
+    var object = collision.obj;
+    switch (object.vectorType) {
+        case "ITEM":
+            entity.x += collision.normal.x;
+            entity.y += collision.normal.y;
+            entity.resetHitChecks();
+            break;
+        case "SOLID":
+            entity.x += collision.normal.x;
+            entity.y += collision.normal.y;
+            entity.resetHitChecks();
+            break;
+    }
 };
