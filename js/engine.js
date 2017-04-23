@@ -117,6 +117,8 @@ RPGToolkit.prototype.startScene = function () {
     if (rpgtoolkit.firstScene) {
         rpgtoolkit.firstScene = false;
     }
+    
+    rpgtoolkit.craftyBoard.show = true;
     if (rpgtoolkit.craftyBoard.board.backgroundMusic) {
         rpgtoolkit.playSound(rpgtoolkit.craftyBoard.board.backgroundMusic, -1);
     }
@@ -222,7 +224,7 @@ RPGToolkit.prototype.createCraftyBoard = function (board) {
                this.trigger("Invalidate"); 
             });
             this.bind("Draw", function (e) {
-                if (e.ctx && this.show) {
+                if (e.ctx) {
                     // Excute the user specified runtime programs first.
                     rpgcode.runTimePrograms.forEach(function(filename) {
                        var program = rpgtoolkit.openProgram(PATH_PROGRAM + filename);

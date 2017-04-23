@@ -19,7 +19,6 @@ function Board(filename) {
 
 Board.prototype.setReady = function () {
     console.info("Setting ready Board name=[%s]", this.name);
-    rpgtoolkit.craftyBoard.show = true;
 };
 
 Board.prototype.generateLayerCache = function () {
